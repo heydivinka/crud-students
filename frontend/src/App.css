@@ -40,3 +40,7 @@
 .read-the-docs {
   color: #888;
 }
+/* Style tambahan untuk App */
+main {
+  transition: all 0.3s ease-in-out;
+}

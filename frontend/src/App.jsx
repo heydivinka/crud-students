@@ -1,69 +1,27 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Dashboard from "./pages/Dashboard";
+import StudentPage from "./pages/StudentPage";
+import NotFound from "./pages/NotFound";
+import Navbar from "./components/Navbar";
+import Sidebar from "./components/Sidebar";
 import "./App.css";
 
-function App() {
-  const [students, setStudents] = useState([]);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-
-  // Ambil data dari Laravel API
-  useEffect(() => {
-    fetchStudents();
-  }, []);
-
-  const fetchStudents = async () => {
-    try {
-      const response = await axios.get("http://localhost:8000/api/students");
-      setStudents(response.data);
-    } catch (error) {
-      console.error("Gagal mengambil data:", error);
-    }
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await axios.post("http://localhost:8000/api/students", { name, email });
-      setName("");
-      setEmail("");
-      fetchStudents(); // refresh data
-    } catch (error) {
-      console.error("Gagal menambah data:", error);
-    }
-  };
-
+export default function App() {
   return (
-    <div className="container">
-      <h1>CRUD React + Laravel</h1>
-
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Nama"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <button type="submit">Tambah</button>
-      </form>
-
-      <ul>
-        {students.map((student) => (
-          <li key={student.id}>
-            {student.name} - {student.email}
-          </li>
-        ))}
-      </ul>
-    </div>
+    <Router>
+      <div className="flex h-screen">
+        <Sidebar />
+        <div className="flex-1 flex flex-col">
+          <Navbar />
+          <main className="p-6 bg-gray-50 flex-1 overflow-y-auto">
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/students" element={<StudentPage />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </main>
+        </div>
+      </div>
+    </Router>
   );
 }
-
-export default App;

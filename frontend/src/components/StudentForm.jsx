@@ -1,6 +1,6 @@
     import { useEffect, useState } from "react";
     import Swal from "sweetalert2";
-    import api from "../api";
+    import api from "../utils/api";
 
     export default function StudentForm({ fetchStudents, selected, setSelected }) {
     const [formData, setFormData] = useState({
