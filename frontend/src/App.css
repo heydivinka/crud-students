@@ -1,10 +1,19 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* Reset layout agar full screen */
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #000; /* optional: dark bg global */
+  color: #fff; /* optional: white text */
 }
 
+/* Hapus pembatas width */
+#root {
+  text-align: left; /* biar teks gak ketengah semua */
+}
+
+/* Kalau mau pertahankan animasi logo, boleh */
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -40,7 +49,8 @@
 .read-the-docs {
   color: #888;
 }
-/* Style tambahan untuk App */
+
+/* Optional: efek transisi halus */
 main {
   transition: all 0.3s ease-in-out;
 }
