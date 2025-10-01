@@ -52,7 +52,6 @@
         { name: "Tidak Aktif", value: stats.tidakAktif },
     ];
 
-    // URL backend untuk foto
     const backendUrl = import.meta.env.VITE_BACKEND_URL || "";
 
     return (
@@ -115,9 +114,9 @@
                 key={student.id}
                 className="bg-neutral-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow"
                 >
-                {/* Rasio 3:4 */}
+                {/* Rasio 1:1 */}
                 <div className="w-full relative overflow-hidden">
-                    <div className="pt-[133.33%] relative">
+                    <div className="pt-[100%] relative">
                     <img
                         src={
                         student.photo

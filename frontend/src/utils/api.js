@@ -3,9 +3,11 @@
 
     const api = axios.create({
     baseURL: "http://127.0.0.1:8000/api",
-    headers: {
-        "Content-Type": "application/json",
-    },
+    // Hapus headers default Content-Type
+    // Biarkan axios otomatis menyesuaikan Content-Type saat kirim FormData
     });
-// buka http://127.0.0.1:8000/api/students untuk melihat data siswa di browser secara json
+
+    // Catatan: Jika mau kirim JSON biasa, tinggal append headers saat request
+    // Contoh: api.post("/students", data, { headers: { "Content-Type": "application/json" } })
+
     export default api;

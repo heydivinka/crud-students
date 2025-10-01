@@ -35,10 +35,9 @@ class StudentController extends Controller
             'no_hp' => 'required',
             'added_by' => 'nullable',
             'is_active' => 'boolean',
-            'photo' => 'nullable|image|max:2048', // validasi foto
+            'photo' => 'nullable|image|max:5120', // 5MB
         ]);
 
-        // Handle upload foto
         if ($request->hasFile('photo')) {
             $file = $request->file('photo');
             $filename = time() . '_' . $file->getClientOriginalName();
@@ -77,12 +76,10 @@ class StudentController extends Controller
             'no_hp' => 'required',
             'added_by' => 'nullable',
             'is_active' => 'boolean',
-            'photo' => 'nullable|image|max:2048',
+            'photo' => 'nullable|image|max:5120', // 5MB
         ]);
 
-        // Handle upload foto baru
         if ($request->hasFile('photo')) {
-            // Hapus foto lama jika ada
             if ($student->photo && file_exists(public_path($student->photo))) {
                 unlink(public_path($student->photo));
             }
@@ -99,7 +96,6 @@ class StudentController extends Controller
     public function destroy(string $id)
     {
         $student = Students::findOrFail($id);
-        // Hapus foto lama jika ada
         if ($student->photo && file_exists(public_path($student->photo))) {
             unlink(public_path($student->photo));
         }
@@ -129,10 +125,9 @@ class StudentController extends Controller
             'no_hp' => 'required',
             'added_by' => 'nullable',
             'is_active' => 'boolean',
-            'photo' => 'nullable|image|max:2048',
+            'photo' => 'nullable|image|max:5120', // 5MB
         ]);
 
-        // Handle upload foto API
         if ($request->hasFile('photo')) {
             $file = $request->file('photo');
             $filename = time() . '_' . $file->getClientOriginalName();
@@ -162,10 +157,9 @@ class StudentController extends Controller
             'no_hp' => 'required',
             'added_by' => 'nullable',
             'is_active' => 'boolean',
-            'photo' => 'nullable|image|max:2048',
+            'photo' => 'nullable|image|max:5120', // 5MB
         ]);
 
-        // Handle upload foto baru API
         if ($request->hasFile('photo')) {
             if ($student->photo && file_exists(public_path($student->photo))) {
                 unlink(public_path($student->photo));

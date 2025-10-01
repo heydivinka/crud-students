@@ -3,7 +3,7 @@
     import api from "../utils/api";
     import { Save } from "lucide-react";
 
-    const backendUrl = import.meta.env.VITE_BACKEND_URL;
+    const backendUrl = import.meta.env.VITE_BACKEND_URL; // pastikan di .env ada
 
     export default function StudentForm({ fetchStudents, selected, setSelected }) {
     const [formData, setFormData] = useState({
@@ -22,18 +22,24 @@
 
     useEffect(() => {
         if (selected) {
-        setFormData({ ...selected, photo: null }); // jangan set file lama
+        setFormData({ ...selected, photo: null });
         }
     }, [selected]);
 
     const handleChange = (e) => {
-        const { name, value, files } = e.target;
+        const { name, value, files, type, checked } = e.target;
 
         if (name === "nisin") {
         const onlyNumbers = value.replace(/\D/g, "");
         if (onlyNumbers.length <= 10) setFormData({ ...formData, [name]: onlyNumbers });
         } else if (name === "photo") {
+        if (files[0] && files[0].size > 5 * 1024 * 1024) { // 5MB
+            Swal.fire("Gagal!", "Ukuran foto maksimal 5MB.", "error");
+            return;
+        }
         setFormData({ ...formData, photo: files[0] || null });
+        } else if (type === "checkbox") {
+        setFormData({ ...formData, [name]: checked });
         } else {
         setFormData({ ...formData, [name]: value });
         }
@@ -41,6 +47,7 @@
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
         if (formData.nisin.length !== 10) {
         Swal.fire("Gagal!", "NISN harus 10 digit.", "error");
         return;
@@ -49,18 +56,18 @@
         try {
         const data = new FormData();
         Object.keys(formData).forEach((key) => {
-            if (formData[key] !== null) data.append(key, formData[key]);
+            if (formData[key] !== null) {
+            if (key === "angkatan") data.append(key, Number(formData[key]));
+            else if (key === "is_active") data.append(key, formData[key] ? 1 : 0);
+            else data.append(key, formData[key]);
+            }
         });
 
         if (selected) {
-            await api.post(`/students/${selected.id}?_method=PUT`, data, {
-            headers: { "Content-Type": "multipart/form-data" },
-            });
+            await api.post(`/students/${selected.id}?_method=PUT`, data); // jangan set Content-Type manual
             Swal.fire("Updated!", "Data berhasil diperbarui!", "success");
         } else {
-            await api.post("/students", data, {
-            headers: { "Content-Type": "multipart/form-data" },
-            });
+            await api.post("/students", data);
             Swal.fire("Added!", "Data berhasil ditambahkan!", "success");
         }
 
