@@ -5,7 +5,7 @@
         <table className="min-w-full border border-neutral-800 bg-neutral-900 rounded-lg overflow-hidden">
             <thead className="bg-neutral-800 text-neutral-300">
             <tr>
-                {["#", "NISIN", "Nama", "Jurusan", "Angkatan", "Status", "Aksi"].map((h) => (
+                {["#", "NISIN", "Nama", "Jurusan", "Angkatan", "Alamat", "Nomor HP", "Status", "Aksi"].map((h) => (
                 <th key={h} className="px-4 py-3 text-left font-medium">
                     {h}
                 </th>
@@ -24,6 +24,8 @@
                     <td className="px-4 py-3">{student.nama_lengkap}</td>
                     <td className="px-4 py-3">{student.jurusan}</td>
                     <td className="px-4 py-3">{student.angkatan}</td>
+                    <td className="px-4 py-3">{student.alamat || "Belum diisi"}</td>
+                    <td className="px-4 py-3">{student.no_hp || "Belum diisi"}</td>
                     <td className="px-4 py-3">
                     {student.is_active ? (
                         <span className="text-emerald-400">Aktif</span>
@@ -50,7 +52,7 @@
             ) : (
                 <tr>
                 <td
-                    colSpan="7"
+                    colSpan="9"
                     className="px-4 py-6 text-center text-neutral-500 italic"
                 >
                     Tidak ada data siswa.

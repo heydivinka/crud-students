@@ -1,7 +1,7 @@
-    // StudentForm.jsx
     import { useEffect, useState } from "react";
     import Swal from "sweetalert2";
     import api from "../utils/api";
+    import { Save } from "lucide-react";
 
     export default function StudentForm({ fetchStudents, selected, setSelected }) {
     const [formData, setFormData] = useState({
@@ -57,36 +57,62 @@
     };
 
     const inputClass =
-        "bg-transparent border-b border-neutral-700 focus:border-emerald-500 outline-none py-2 text-white placeholder-neutral-500 transition";
+        "bg-neutral-800/50 border border-neutral-700/50 rounded-lg px-4 py-2.5 text-white placeholder-neutral-400 focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition-all duration-200 w-full";
+
+    const jurusanOptions = [
+        { value: "", label: "Pilih Jurusan" },
+        { value: "Animasi", label: "Animasi" },
+        { value: "Broadcasting", label: "Broadcasting" },
+        { value: "PPLG", label: "PPLG" },
+        { value: "Teknik Otomotif", label: "Teknik Otomotif" },
+        { value: "TPFL", label: "TPFL" },
+    ];
 
     return (
-        <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-6 mt-6">
+        <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-6 bg-neutral-900 p-6 rounded-xl shadow-lg">
         {[
             { name: "nisin", placeholder: "NISIN", type: "text" },
             { name: "nama_lengkap", placeholder: "Nama Lengkap", type: "text" },
             { name: "tempat_lahir", placeholder: "Tempat Lahir", type: "text" },
             { name: "tanggal_lahir", placeholder: "Tanggal Lahir", type: "date" },
             { name: "alamat", placeholder: "Alamat", type: "text", span: 2 },
-            { name: "jurusan", placeholder: "Jurusan", type: "text" },
+            { name: "jurusan", placeholder: "Jurusan", type: "select" },
             { name: "angkatan", placeholder: "Angkatan", type: "number" },
             { name: "no_hp", placeholder: "No HP", type: "text" },
         ].map((field) => (
-            <input
-            key={field.name}
-            type={field.type}
-            name={field.name}
-            placeholder={field.placeholder}
-            value={formData[field.name]}
-            onChange={handleChange}
-            required
-            className={`${inputClass} ${field.span === 2 ? "col-span-2" : ""}`}
-            />
+            <div key={field.name} className={`${field.span === 2 ? "col-span-2" : ""}`}>
+            {field.type === "select" ? (
+                <select
+                name={field.name}
+                value={formData[field.name]}
+                onChange={handleChange}
+                required
+                className={inputClass}
+                >
+                {jurusanOptions.map((option) => (
+                    <option key={option.value} value={option.value} disabled={option.value === ""}>
+                    {option.label}
+                    </option>
+                ))}
+                </select>
+            ) : (
+                <input
+                type={field.type}
+                name={field.name}
+                placeholder={field.placeholder}
+                value={formData[field.name]}
+                onChange={handleChange}
+                required
+                className={inputClass}
+                />
+            )}
+            </div>
         ))}
-
         <button
             type="submit"
-            className="col-span-2 mt-4 bg-emerald-600 hover:bg-emerald-500 text-white py-2 rounded-md transition font-medium"
+            className="col-span-2 flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white py-2.5 rounded-lg transition-all duration-200 font-medium shadow-md"
         >
+            <Save size={18} />
             {selected ? "Update Data" : "Tambah Data"}
         </button>
         </form>
