@@ -3,7 +3,13 @@
     import { Link } from "react-router-dom";
     import { Users, UserCheck, UserX } from "lucide-react";
     import {
-    BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    ResponsiveContainer,
     } from "recharts";
 
     export default function Dashboard() {
@@ -12,26 +18,42 @@
         aktif: 0,
         tidakAktif: 0,
     });
+    const [students, setStudents] = useState([]);
 
     useEffect(() => {
         fetchStats();
+        fetchStudents();
     }, []);
 
     const fetchStats = async () => {
+        try {
         const res = await api.get("/students");
         const data = res.data;
         const aktif = data.filter((s) => s.is_active).length;
         const tidakAktif = data.length - aktif;
-
         setStats({ total: data.length, aktif, tidakAktif });
+        } catch (err) {
+        console.error(err);
+        }
     };
 
-    // Data untuk chart
+    const fetchStudents = async () => {
+        try {
+        const res = await api.get("/students");
+        setStudents(res.data);
+        } catch (err) {
+        console.error(err);
+        }
+    };
+
     const chartData = [
         { name: "Total", value: stats.total },
         { name: "Aktif", value: stats.aktif },
         { name: "Tidak Aktif", value: stats.tidakAktif },
     ];
+
+    // URL backend untuk foto
+    const backendUrl = import.meta.env.VITE_BACKEND_URL || "";
 
     return (
         <div className="min-h-screen bg-black text-white px-8 py-10">
@@ -63,7 +85,7 @@
         </div>
 
         {/* Chart */}
-        <div className="bg-neutral-900 border border-white/10 rounded-2xl p-6 shadow-lg">
+        <div className="bg-neutral-900 border border-white/10 rounded-2xl p-6 shadow-lg mb-10">
             <h2 className="text-2xl font-bold mb-4">Statistik Visual</h2>
             <div className="w-full h-72">
             <ResponsiveContainer width="100%" height="100%">
@@ -81,6 +103,43 @@
                 <Bar dataKey="value" fill="#38bdf8" radius={[6, 6, 0, 0]} />
                 </BarChart>
             </ResponsiveContainer>
+            </div>
+        </div>
+
+        {/* Grid siswa */}
+        <div className="mt-10">
+            <h2 className="text-2xl font-bold mb-6">Daftar Siswa</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+            {students.map((student) => (
+                <div
+                key={student.id}
+                className="bg-neutral-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow"
+                >
+                {/* Rasio 3:4 */}
+                <div className="w-full relative overflow-hidden">
+                    <div className="pt-[133.33%] relative">
+                    <img
+                        src={
+                        student.photo
+                            ? `${backendUrl}/${student.photo}`
+                            : "/placeholder.png"
+                        }
+                        alt={student.nama_lengkap}
+                        className="absolute top-0 left-0 w-full h-full object-cover"
+                    />
+                    </div>
+                </div>
+
+                {/* Data siswa */}
+                <div className="p-4 text-white">
+                    <h3 className="font-semibold text-lg">{student.nama_lengkap}</h3>
+                    <p className="text-sm">NISN: {student.nisin}</p>
+                    <p className="text-sm">Jurusan: {student.jurusan}</p>
+                    <p className="text-sm">Angkatan: {student.angkatan}</p>
+                    <p className="text-sm">No HP: {student.no_hp}</p>
+                </div>
+                </div>
+            ))}
             </div>
         </div>
 

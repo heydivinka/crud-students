@@ -9,6 +9,7 @@ class Students extends Model
 {
     use HasFactory;
 
+    // Kolom yang bisa diisi mass assignment
     protected $fillable = [
         'nisin',
         'nama_lengkap',
@@ -20,5 +21,6 @@ class Students extends Model
         'no_hp',
         'added_by',
         'is_active',
+        'photo', // tambahkan kolom foto
     ];
 }
