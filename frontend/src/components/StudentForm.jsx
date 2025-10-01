@@ -3,7 +3,7 @@
     import api from "../utils/api";
     import { Save } from "lucide-react";
 
-    const backendUrl = import.meta.env.VITE_BACKEND_URL; // pastikan di .env ada
+    const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
     export default function StudentForm({ fetchStudents, selected, setSelected }) {
     const [formData, setFormData] = useState({
@@ -64,7 +64,7 @@
         });
 
         if (selected) {
-            await api.post(`/students/${selected.id}?_method=PUT`, data); // jangan set Content-Type manual
+            await api.post(`/students/${selected.id}?_method=PUT`, data);
             Swal.fire("Updated!", "Data berhasil diperbarui!", "success");
         } else {
             await api.post("/students", data);
@@ -142,6 +142,19 @@
             )}
             </div>
         ))}
+
+        {/* Checkbox is_active */}
+        <div className="col-span-2 flex items-center gap-2">
+            <input
+            type="checkbox"
+            name="is_active"
+            checked={formData.is_active}
+            onChange={handleChange}
+            className="w-5 h-5 accent-emerald-500"
+            />
+            <label>Aktif</label>
+        </div>
+
         <button type="submit" className="col-span-2 flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white py-2.5 rounded-lg transition-all duration-200 font-medium shadow-md">
             <Save size={18} />
             {selected ? "Update Data" : "Tambah Data"}

@@ -21,6 +21,11 @@ class Students extends Model
         'no_hp',
         'added_by',
         'is_active',
-        'photo', // tambahkan kolom foto
+        'photo', // kolom foto
+    ];
+
+    // Casting kolom is_active ke boolean
+    protected $casts = [
+        'is_active' => 'boolean',
     ];
 }
