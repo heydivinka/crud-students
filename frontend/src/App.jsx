@@ -4,9 +4,9 @@ import Dashboard from "./pages/Dashboard";
 import StudentPage from "./pages/StudentPage";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
+import Footer from "./components/Footer"; // ✅ tambahkan ini
 
 export default function App() {
-  // 🔍 State global untuk pencarian siswa
   const [searchTerm, setSearchTerm] = useState("");
 
   return (
@@ -17,17 +17,19 @@ export default function App() {
 
         {/* Konten utama */}
         <div className="flex-1 flex flex-col">
-          {/* Navbar di atas */}
+          {/* Navbar */}
           <Navbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
           {/* Isi halaman */}
           <main className="flex-1 w-full">
             <Routes>
-              {/* Kirim searchTerm ke Dashboard */}
               <Route path="/" element={<Dashboard searchTerm={searchTerm} />} />
               <Route path="/students" element={<StudentPage />} />
             </Routes>
           </main>
+
+          {/* Footer */}
+          <Footer /> {/* ✅ tampil di bawah semua halaman */}
         </div>
       </div>
     </Router>
