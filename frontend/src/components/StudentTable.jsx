@@ -1,11 +1,21 @@
-    // StudentTable.jsx
     export default function StudentTable({ data, onEdit, onDelete }) {
     return (
-        <div className="mt-8 overflow-x-auto">
+        <div className="mt-4 overflow-x-auto">
         <table className="min-w-full border border-neutral-800 bg-neutral-900 rounded-lg overflow-hidden">
             <thead className="bg-neutral-800 text-neutral-300">
             <tr>
-                {["#", "NISIN", "Nama", "Jurusan", "Angkatan", "Alamat", "Nomor HP", "Status", "Aksi"].map((h) => (
+                {[
+                "No.",    // nomor urut
+                "#",      // ID database
+                "NISIN",
+                "Nama",
+                "Jurusan",
+                "Angkatan",
+                "Alamat",
+                "Nomor HP",
+                "Status",
+                "Aksi",
+                ].map((h) => (
                 <th key={h} className="px-4 py-3 text-left font-medium">
                     {h}
                 </th>
@@ -19,7 +29,12 @@
                     key={student.id}
                     className="border-t border-neutral-800 hover:bg-neutral-800 transition"
                 >
+                    {/* Nomor urut baris */}
                     <td className="px-4 py-3 text-neutral-400">{index + 1}</td>
+
+                    {/* ID database */}
+                    <td className="px-4 py-3 text-neutral-300">{student.id}</td>
+
                     <td className="px-4 py-3">{student.nisin}</td>
                     <td className="px-4 py-3">{student.nama_lengkap}</td>
                     <td className="px-4 py-3">{student.jurusan}</td>
@@ -52,7 +67,7 @@
             ) : (
                 <tr>
                 <td
-                    colSpan="9"
+                    colSpan="10"
                     className="px-4 py-6 text-center text-neutral-500 italic"
                 >
                     Tidak ada data siswa.
